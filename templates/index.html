@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title or "Платформа подбора персонала" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <!-- Навигационная панель -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-content">
+          <a href="{{ url_for('dashboard') if session.username else url_for('login') }}" class="navbar-brand">
+            HR Platform
+          </a>
+          {% if session.username %}
+            <div class="navbar-nav">
+              <span class="nav-link">Вы вошли как <strong>{{ session.username }}</strong> ({{ session.role }})</span>
+              <a class="nav-link" href="{{ url_for('dashboard') }}">Личный кабинет</a>
+              {% if session.role == 'admin' %}
+              <a class="nav-link" href="{{ url_for('admin_moderation') }}">Модерация</a>
+              {% endif %}
+              {% if session.role == 'university_rep' %}
+              <a class="nav-link" href="{{ url_for('university_dashboard') }}">Кабинет университета</a>
+              {% endif %}
+              {% if session.role == 'company_hr' %}
+              <a class="nav-link" href="{{ url_for('hr_dashboard') }}">Кабинет HR</a>
+              {% endif %}
+              <a class="nav-link" href="{{ url_for('catalog') }}">Каталог вакансий</a>
+              <a class="nav-link" href="{{ url_for('logout') }}">Выход</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="container">
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
