@@ -2,40 +2,40 @@
 {% block content %}
 <h1>{{ vacancy.title }}</h1>
 
-<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
-  <p style="margin: 5px 0; color: #9fb0c0;">
-    <strong>Компания:</strong> {{ vacancy.company_name }}
+<div class="card mb-3">
+  <p class="mb-1">
+    <strong>Компания:</strong> <span class="accent-text">{{ vacancy.company_name }}</span>
   </p>
   {% if vacancy.salary_range %}
-  <p style="margin: 5px 0; color: #9fb0c0;">
-    <strong>Зарплата:</strong> {{ vacancy.salary_range }}
+  <p class="mb-1">
+    <strong>Зарплата:</strong> <span class="accent-text">{{ vacancy.salary_range }}</span>
   </p>
   {% endif %}
-  <p style="margin: 5px 0; color: #9fb0c0;">
+  <p class="mb-1">
     <strong>Дата публикации:</strong> {{ vacancy.created_at }}
   </p>
 </div>
 
 {% if vacancy.description %}
-<div style="margin-bottom: 20px;">
+<div class="card mb-3">
   <h3>Описание</h3>
-  <div style="background: #0b0f14; padding: 15px; border-radius: 8px; color: #cfe3ff;">
+  <div class="body-text">
     {{ vacancy.description }}
   </div>
 </div>
 {% endif %}
 
 {% if vacancy.requirements %}
-<div style="margin-bottom: 20px;">
+<div class="card mb-3">
   <h3>Требования</h3>
-  <div style="background: #0b0f14; padding: 15px; border-radius: 8px; color: #cfe3ff;">
+  <div class="body-text">
     {{ vacancy.requirements }}
   </div>
 </div>
 {% endif %}
 
-<div class="row">
-  <a class="btn primary" href="{{ url_for('apply_to_vacancy', vacancy_id=vacancy.id) }}">Откликнуться</a>
-  <a class="btn" href="{{ url_for('catalog') }}">Назад к каталогу</a>
+<div class="d-flex gap-2">
+  <a class="btn btn-cta" href="{{ url_for('apply_to_vacancy', vacancy_id=vacancy.id) }}">Откликнуться</a>
+  <a class="btn btn-secondary" href="{{ url_for('catalog') }}">Назад к каталогу</a>
 </div>
 {% endblock %}

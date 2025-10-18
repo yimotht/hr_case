@@ -1,23 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
-<div style="text-align: center; padding: 40px 20px;">
-  <h1 style="color: #4ade80; margin-bottom: 20px;">✅ Отклик успешно отправлен!</h1>
+<div class="text-center" style="padding: 40px 20px;">
+  <h1 style="color: var(--ral-3026); margin-bottom: 20px;">✅ Отклик успешно отправлен!</h1>
   
-  <div style="background: #1a1f2e; padding: 30px; border-radius: 12px; border: 1px solid #2a3240; margin: 20px 0;">
-    <h2 style="margin: 0 0 15px 0; color: #e6edf3;">{{ vacancy.title }}</h2>
-    <p style="margin: 5px 0; color: #9fb0c0;">
-      <strong>Компания:</strong> {{ vacancy.company_name }}
+  <div class="card" style="margin: 20px 0;">
+    <h2>{{ vacancy.title }}</h2>
+    <p class="mb-1">
+      <strong>Компания:</strong> <span class="accent-text">{{ vacancy.company_name }}</span>
     </p>
   </div>
   
-  <p style="color: #cfe3ff; margin: 20px 0;">
+  <p class="body-text" style="margin: 20px 0;">
     Ваш отклик отправлен HR-менеджеру компании. 
     <br>Мы уведомим вас, если компания заинтересуется вашей кандидатурой.
   </p>
   
-  <div class="row" style="justify-content: center; margin-top: 30px;">
-    <a class="btn primary" href="{{ url_for('catalog') }}">Посмотреть другие вакансии</a>
-    <a class="btn" href="{{ url_for('dashboard') }}">Вернуться в личный кабинет</a>
+  <div class="d-flex gap-2 justify-center" style="margin-top: 30px;">
+    <a class="btn btn-primary" href="{{ url_for('catalog') }}">Посмотреть другие вакансии</a>
+    <a class="btn btn-secondary" href="{{ url_for('dashboard') }}">Вернуться в личный кабинет</a>
   </div>
 </div>
 {% endblock %}

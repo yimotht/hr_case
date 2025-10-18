@@ -2,36 +2,36 @@
 {% block content %}
 <h1>Кабинет HR</h1>
 
-<div class="row" style="margin-bottom: 20px;">
-  <a class="btn primary" href="{{ url_for('hr_create_vacancy') }}">Создать вакансию</a>
+<div class="d-flex gap-2 mb-4">
+  <a class="btn btn-primary" href="{{ url_for('hr_create_vacancy') }}">Создать вакансию</a>
 </div>
 
 <h2>Мои вакансии</h2>
 {% if vacancies %}
-  <div style="display: grid; gap: 15px;">
+  <div class="grid grid-2">
     {% for vacancy in vacancies %}
-      <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; border: 1px solid #2a3240;">
-        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-          <h3 style="margin: 0; color: #e6edf3;">{{ vacancy.title }}</h3>
-          <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: {% if vacancy.status == 'published' %}#063{% elif vacancy.status == 'on_moderation' %}#663{% elif vacancy.status == 'rejected' %}#633{% else %}#335{% endif %};">
+      <div class="vacancy-card">
+        <div class="d-flex justify-between align-center mb-2">
+          <h3 class="vacancy-title">{{ vacancy.title }}</h3>
+          <span class="badge badge-{% if vacancy.status == 'published' %}success{% elif vacancy.status == 'on_moderation' %}warning{% elif vacancy.status == 'rejected' %}danger{% else %}info{% endif %}">
             {{ vacancy.status }}
           </span>
         </div>
-        <p style="margin: 5px 0; color: #9fb0c0;">
-          <strong>Откликов:</strong> {{ vacancy.application_count }}
+        <p class="mb-1">
+          <strong>Откликов:</strong> <span class="accent-text">{{ vacancy.application_count }}</span>
         </p>
-        <p style="margin: 5px 0; color: #9fb0c0;">
+        <p class="mb-1">
           <strong>Создана:</strong> {{ vacancy.created_at }}
         </p>
         {% if vacancy.salary_range %}
-        <p style="margin: 5px 0; color: #9fb0c0;">
-          <strong>Зарплата:</strong> {{ vacancy.salary_range }}
+        <p class="mb-1">
+          <strong>Зарплата:</strong> <span class="accent-text">{{ vacancy.salary_range }}</span>
         </p>
         {% endif %}
-        <div class="row" style="margin-top: 10px;">
+        <div class="d-flex gap-2 mt-3">
           {% if vacancy.status == 'published' %}
           <form method="post" action="{{ url_for('hr_close_vacancy', vacancy_id=vacancy.id) }}" style="display: inline;">
-            <button class="btn" type="submit" onclick="return confirm('Закрыть вакансию? Она будет перемещена в архив.')">Закрыть вакансию</button>
+            <button class="btn btn-secondary" type="submit" onclick="return confirm('Закрыть вакансию? Она будет перемещена в архив.')">Закрыть вакансию</button>
           </form>
           {% endif %}
         </div>
@@ -39,44 +39,50 @@
     {% endfor %}
   </div>
 {% else %}
-  <p style="color: #9fb0c0;">У вас пока нет вакансий.</p>
+  <div class="card text-center">
+    <h3>У вас пока нет вакансий</h3>
+    <p>Создайте первую вакансию, чтобы начать поиск сотрудников.</p>
+  </div>
 {% endif %}
 
 <h2>Отклики на вакансии</h2>
 {% if applications %}
-  <div style="display: grid; gap: 15px;">
+  <div class="grid grid-2">
     {% for app in applications %}
-      <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; border: 1px solid #2a3240;">
-        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
-          <h4 style="margin: 0; color: #e6edf3;">{{ app.candidate_name }}</h4>
-          <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: {% if app.status == 'new' %}#663{% elif app.status == 'viewed' %}#335{% elif app.status == 'interview' %}#063{% else %}#633{% endif %};">
+      <div class="vacancy-card">
+        <div class="d-flex justify-between align-center mb-2">
+          <h4>{{ app.candidate_name }}</h4>
+          <span class="badge badge-{% if app.status == 'new' %}warning{% elif app.status == 'viewed' %}info{% elif app.status == 'interview' %}success{% else %}danger{% endif %}">
             {{ app.status }}
           </span>
         </div>
-        <p style="margin: 5px 0; color: #9fb0c0;">
+        <p class="mb-1">
           <strong>Вакансия:</strong> {{ app.vacancy_title }}
         </p>
-        <p style="margin: 5px 0; color: #9fb0c0;">
+        <p class="mb-1">
           <strong>Дата отклика:</strong> {{ app.created_at }}
         </p>
         {% if app.cover_letter %}
-        <div style="margin: 10px 0;">
+        <div class="mb-2">
           <strong>Сопроводительное письмо:</strong>
-          <div style="background: #0b0f14; padding: 10px; border-radius: 4px; margin-top: 5px; color: #cfe3ff;">
+          <div class="card" style="margin-top: 5px; padding: 1rem;">
             {{ app.cover_letter }}
           </div>
         </div>
         {% endif %}
-        <div class="row" style="margin-top: 10px;">
-          <a class="btn primary" href="{{ url_for('hr_view_application', application_id=app.id) }}">Подробнее</a>
-          <button class="btn" onclick="updateApplicationStatus({{ app.id }}, 'viewed')">Просмотрено</button>
-          <button class="btn" onclick="updateApplicationStatus({{ app.id }}, 'interview')">Пригласить на собеседование</button>
-          <button class="btn" onclick="updateApplicationStatus({{ app.id }}, 'rejected')">Отклонить</button>
+        <div class="d-flex gap-2 flex-wrap">
+          <a class="btn btn-primary" href="{{ url_for('hr_view_application', application_id=app.id) }}">Подробнее</a>
+          <button class="btn btn-secondary" onclick="updateApplicationStatus({{ app.id }}, 'viewed')">Просмотрено</button>
+          <button class="btn btn-secondary" onclick="updateApplicationStatus({{ app.id }}, 'interview')">Пригласить на собеседование</button>
+          <button class="btn btn-secondary" onclick="updateApplicationStatus({{ app.id }}, 'rejected')">Отклонить</button>
         </div>
       </div>
     {% endfor %}
   </div>
 {% else %}
-  <p style="color: #9fb0c0;">Пока нет откликов на ваши вакансии.</p>
+  <div class="card text-center">
+    <h3>Пока нет откликов</h3>
+    <p>Отклики на ваши вакансии будут отображаться здесь.</p>
+  </div>
 {% endif %}
 {% endblock %}

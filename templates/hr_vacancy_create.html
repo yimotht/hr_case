@@ -1,30 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Создать вакансию</h1>
-<form method="post">
-  <div>
-    <label for="title">Должность *</label>
-    <input id="title" name="title" required />
-  </div>
-  <div>
-    <label for="description">Описание *</label>
-    <textarea id="description" name="description" rows="6" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2a3240; background: #0b0f14; color: #e6edf3;" required></textarea>
-  </div>
-  <div>
-    <label for="requirements">Требования</label>
-    <textarea id="requirements" name="requirements" rows="4" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2a3240; background: #0b0f14; color: #e6edf3;"></textarea>
-  </div>
-  <div>
-    <label for="salary_range">Зарплата</label>
-    <input id="salary_range" name="salary_range" placeholder="Например: 50000-80000 руб." />
-  </div>
-  <div>
-    <label for="contacts">Контакты</label>
-    <input id="contacts" name="contacts" placeholder="Email или телефон для связи" />
-  </div>
-  <div class="row">
-    <button class="btn primary" type="submit">Отправить на модерацию</button>
-    <a class="btn" href="{{ url_for('hr_dashboard') }}">Отмена</a>
-  </div>
-</form>
+
+<div class="card">
+  <form method="post">
+    <div class="form-group">
+      <label for="title" class="form-label">Должность *</label>
+      <input id="title" name="title" class="form-input" required />
+    </div>
+    <div class="form-group">
+      <label for="description" class="form-label">Описание *</label>
+      <textarea id="description" name="description" rows="6" class="form-textarea" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="requirements" class="form-label">Требования</label>
+      <textarea id="requirements" name="requirements" rows="4" class="form-textarea"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="salary_range" class="form-label">Зарплата</label>
+      <input id="salary_range" name="salary_range" class="form-input" placeholder="Например: 50000-80000 руб." />
+    </div>
+    <div class="form-group">
+      <label for="contacts" class="form-label">Контакты</label>
+      <input id="contacts" name="contacts" class="form-input" placeholder="Email или телефон для связи" />
+    </div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Отправить на модерацию</button>
+      <a class="btn btn-secondary" href="{{ url_for('hr_dashboard') }}">Отмена</a>
+    </div>
+  </form>
+</div>
 {% endblock %}

@@ -1,40 +1,42 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Регистрация</h1>
-<form method="post">
-  <div>
-    <label for="username">Логин *</label>
-    <input id="username" name="username" autocomplete="username" required />
-  </div>
-  <div>
-    <label for="email">Email *</label>
-    <input id="email" name="email" type="email" autocomplete="email" required />
-  </div>
-  <div class="row">
-    <div>
-      <label for="first_name">Имя</label>
-      <input id="first_name" name="first_name" autocomplete="given-name" />
+<div class="card" style="max-width: 600px; margin: 2rem auto;">
+  <h1 class="text-center">Регистрация</h1>
+  <form method="post">
+    <div class="form-group">
+      <label for="username" class="form-label">Логин *</label>
+      <input id="username" name="username" class="form-input" autocomplete="username" required />
     </div>
-    <div>
-      <label for="last_name">Фамилия</label>
-      <input id="last_name" name="last_name" autocomplete="family-name" />
+    <div class="form-group">
+      <label for="email" class="form-label">Email *</label>
+      <input id="email" name="email" type="email" class="form-input" autocomplete="email" required />
     </div>
-  </div>
-  <div>
-    <label for="phone">Телефон</label>
-    <input id="phone" name="phone" type="tel" autocomplete="tel" />
-  </div>
-  <div>
-    <label for="password">Пароль *</label>
-    <input id="password" name="password" type="password" autocomplete="new-password" required />
-  </div>
-  <div>
-    <label for="password_confirm">Подтверждение пароля *</label>
-    <input id="password_confirm" name="password_confirm" type="password" autocomplete="new-password" required />
-  </div>
-  <div class="row">
-    <button class="btn primary" type="submit">Создать аккаунт</button>
-    <a class="btn" href="{{ url_for('login') }}">Назад ко входу</a>
-  </div>
-</form>
+    <div class="d-flex gap-2">
+      <div class="form-group" style="flex: 1;">
+        <label for="first_name" class="form-label">Имя</label>
+        <input id="first_name" name="first_name" class="form-input" autocomplete="given-name" />
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label for="last_name" class="form-label">Фамилия</label>
+        <input id="last_name" name="last_name" class="form-input" autocomplete="family-name" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="phone" class="form-label">Телефон</label>
+      <input id="phone" name="phone" type="tel" class="form-input" autocomplete="tel" />
+    </div>
+    <div class="form-group">
+      <label for="password" class="form-label">Пароль *</label>
+      <input id="password" name="password" type="password" class="form-input" autocomplete="new-password" required />
+    </div>
+    <div class="form-group">
+      <label for="password_confirm" class="form-label">Подтверждение пароля *</label>
+      <input id="password_confirm" name="password_confirm" type="password" class="form-input" autocomplete="new-password" required />
+    </div>
+    <div class="d-flex gap-2 justify-center">
+      <button class="btn btn-primary" type="submit">Создать аккаунт</button>
+      <a class="btn btn-secondary" href="{{ url_for('login') }}">Назад ко входу</a>
+    </div>
+  </form>
+</div>
 {% endblock %}

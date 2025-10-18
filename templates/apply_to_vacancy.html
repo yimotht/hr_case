@@ -1,65 +1,67 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Отклик на вакансию: {{ vacancy.title }}</h1>
-<p><strong>Компания:</strong> {{ vacancy.company_name }}</p>
+<p><strong>Компания:</strong> <span class="accent-text">{{ vacancy.company_name }}</span></p>
 
-<form method="post" enctype="multipart/form-data">
-  <h3>Информация о кандидате</h3>
-  
-  <div class="row">
-    <div>
-      <label for="first_name">Имя *</label>
-      <input id="first_name" name="first_name" required />
+<div class="card">
+  <form method="post" enctype="multipart/form-data">
+    <h3>Информация о кандидате</h3>
+    
+    <div class="d-flex gap-2">
+      <div class="form-group" style="flex: 1;">
+        <label for="first_name" class="form-label">Имя *</label>
+        <input id="first_name" name="first_name" class="form-input" required />
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label for="last_name" class="form-label">Фамилия *</label>
+        <input id="last_name" name="last_name" class="form-input" required />
+      </div>
     </div>
-    <div>
-      <label for="last_name">Фамилия *</label>
-      <input id="last_name" name="last_name" required />
+    
+    <div class="d-flex gap-2">
+      <div class="form-group" style="flex: 1;">
+        <label for="age" class="form-label">Возраст</label>
+        <input id="age" name="age" type="number" min="16" max="100" class="form-input" />
+      </div>
+      <div class="form-group" style="flex: 1;">
+        <label for="city" class="form-label">Город</label>
+        <input id="city" name="city" class="form-input" />
+      </div>
     </div>
-  </div>
-  
-  <div class="row">
-    <div>
-      <label for="age">Возраст</label>
-      <input id="age" name="age" type="number" min="16" max="100" />
+    
+    <div class="form-group">
+      <label for="education" class="form-label">Образование</label>
+      <input id="education" name="education" class="form-input" />
     </div>
-    <div>
-      <label for="city">Город</label>
-      <input id="city" name="city" />
+    
+    <div class="form-group">
+      <label for="experience" class="form-label">Опыт работы</label>
+      <textarea id="experience" name="experience" rows="4" class="form-textarea"></textarea>
     </div>
-  </div>
-  
-  <div>
-    <label for="education">Образование</label>
-    <input id="education" name="education" />
-  </div>
-  
-  <div>
-    <label for="experience">Опыт работы</label>
-    <textarea id="experience" name="experience" rows="4" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2a3240; background: #0b0f14; color: #e6edf3;"></textarea>
-  </div>
-  
-  <div>
-    <label for="skills">Личные навыки</label>
-    <textarea id="skills" name="skills" rows="3" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2a3240; background: #0b0f14; color: #e6edf3;"></textarea>
-  </div>
+    
+    <div class="form-group">
+      <label for="skills" class="form-label">Личные навыки</label>
+      <textarea id="skills" name="skills" rows="3" class="form-textarea"></textarea>
+    </div>
 
-  <div style="margin: 20px 0;">
-    <label for="resume_file">Файл резюме (опционально)</label>
-    <input type="file" name="resume_file" accept=".pdf,.doc,.docx" />
-    <small style="color: #9fb0c0; display: block; margin-top: 5px;">
-      Можете прикрепить файл резюме в дополнение к заполненной анкете.<br>
-      <strong>Допустимые форматы:</strong> PDF, DOC, DOCX (максимальный размер: 16 МБ)
-    </small>
-  </div>
+    <div class="form-group">
+      <label for="resume_file" class="form-label">Файл резюме (опционально)</label>
+      <input type="file" name="resume_file" accept=".pdf,.doc,.docx" class="form-input" />
+      <small style="color: var(--ral-3032); display: block; margin-top: 5px;">
+        Можете прикрепить файл резюме в дополнение к заполненной анкете.<br>
+        <strong>Допустимые форматы:</strong> PDF, DOC, DOCX (максимальный размер: 16 МБ)
+      </small>
+    </div>
 
-  <div style="margin: 20px 0;">
-    <label for="cover_letter">Сопроводительное письмо</label>
-    <textarea id="cover_letter" name="cover_letter" rows="4" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #2a3240; background: #0b0f14; color: #e6edf3;"></textarea>
-  </div>
+    <div class="form-group">
+      <label for="cover_letter" class="form-label">Сопроводительное письмо</label>
+      <textarea id="cover_letter" name="cover_letter" rows="4" class="form-textarea"></textarea>
+    </div>
 
-  <div class="row">
-    <button class="btn primary" type="submit">Отправить отклик</button>
-    <a class="btn" href="{{ url_for('vacancy_detail', vacancy_id=vacancy.id) }}">Отмена</a>
-  </div>
-</form>
+    <div class="d-flex gap-2">
+      <button class="btn btn-cta" type="submit">Отправить отклик</button>
+      <a class="btn btn-secondary" href="{{ url_for('vacancy_detail', vacancy_id=vacancy.id) }}">Отмена</a>
+    </div>
+  </form>
+</div>
 {% endblock %}
