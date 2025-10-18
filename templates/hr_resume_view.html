@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Просмотр резюме</h1>
+
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <h2 style="margin: 0 0 15px 0; color: #e6edf3;">{{ resume.title }}</h2>
+  
+  {% if resume.resume_file %}
+  <div style="margin: 15px 0;">
+    <strong>Прикрепленный файл:</strong>
+    <div style="background: #0b0f14; padding: 10px; border-radius: 4px; margin-top: 5px; color: #cfe3ff;">
+      📎 {{ resume.resume_file.split('/')[-1] if '/' in resume.resume_file else resume.resume_file }}
+    </div>
+    <div style="margin-top: 10px;">
+      <a href="{{ url_for('hr_download_resume', resume_id=resume.id) }}" class="btn primary">Скачать файл</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
+{% if resume.experience %}
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <h3>Опыт работы</h3>
+  <div style="background: #0b0f14; padding: 15px; border-radius: 4px; color: #cfe3ff;">
+    {{ resume.experience }}
+  </div>
+</div>
+{% endif %}
+
+{% if resume.education %}
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <h3>Образование</h3>
+  <div style="background: #0b0f14; padding: 15px; border-radius: 4px; color: #cfe3ff;">
+    {{ resume.education }}
+  </div>
+</div>
+{% endif %}
+
+<div class="row">
+  <a class="btn" href="javascript:history.back()">Назад</a>
+  <a class="btn primary" href="{{ url_for('hr_dashboard') }}">К откликам</a>
+</div>
+{% endblock %}

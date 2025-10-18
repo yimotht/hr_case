@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Кабинет HR</h1>
+
+<div class="row" style="margin-bottom: 20px;">
+  <a class="btn primary" href="{{ url_for('hr_create_vacancy') }}">Создать вакансию</a>
+</div>
+
+<h2>Мои вакансии</h2>
+{% if vacancies %}
+  <div style="display: grid; gap: 15px;">
+    {% for vacancy in vacancies %}
+      <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; border: 1px solid #2a3240;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+          <h3 style="margin: 0; color: #e6edf3;">{{ vacancy.title }}</h3>
+          <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: {% if vacancy.status == 'published' %}#063{% elif vacancy.status == 'on_moderation' %}#663{% elif vacancy.status == 'rejected' %}#633{% else %}#335{% endif %};">
+            {{ vacancy.status }}
+          </span>
+        </div>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Откликов:</strong> {{ vacancy.application_count }}
+        </p>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Создана:</strong> {{ vacancy.created_at }}
+        </p>
+        {% if vacancy.salary_range %}
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Зарплата:</strong> {{ vacancy.salary_range }}
+        </p>
+        {% endif %}
+        <div class="row" style="margin-top: 10px;">
+          {% if vacancy.status == 'published' %}
+          <form method="post" action="{{ url_for('hr_close_vacancy', vacancy_id=vacancy.id) }}" style="display: inline;">
+            <button class="btn" type="submit" onclick="return confirm('Закрыть вакансию? Она будет перемещена в архив.')">Закрыть вакансию</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p style="color: #9fb0c0;">У вас пока нет вакансий.</p>
+{% endif %}
+
+<h2>Отклики на вакансии</h2>
+{% if applications %}
+  <div style="display: grid; gap: 15px;">
+    {% for app in applications %}
+      <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; border: 1px solid #2a3240;">
+        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+          <h4 style="margin: 0; color: #e6edf3;">{{ app.candidate_name }}</h4>
+          <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: {% if app.status == 'new' %}#663{% elif app.status == 'viewed' %}#335{% elif app.status == 'interview' %}#063{% else %}#633{% endif %};">
+            {{ app.status }}
+          </span>
+        </div>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Вакансия:</strong> {{ app.vacancy_title }}
+        </p>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Дата отклика:</strong> {{ app.created_at }}
+        </p>
+        {% if app.cover_letter %}
+        <div style="margin: 10px 0;">
+          <strong>Сопроводительное письмо:</strong>
+          <div style="background: #0b0f14; padding: 10px; border-radius: 4px; margin-top: 5px; color: #cfe3ff;">
+            {{ app.cover_letter }}
+          </div>
+        </div>
+        {% endif %}
+        <div class="row" style="margin-top: 10px;">
+          <a class="btn primary" href="{{ url_for('hr_view_application', application_id=app.id) }}">Подробнее</a>
+          <button class="btn" onclick="updateApplicationStatus({{ app.id }}, 'viewed')">Просмотрено</button>
+          <button class="btn" onclick="updateApplicationStatus({{ app.id }}, 'interview')">Пригласить на собеседование</button>
+          <button class="btn" onclick="updateApplicationStatus({{ app.id }}, 'rejected')">Отклонить</button>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p style="color: #9fb0c0;">Пока нет откликов на ваши вакансии.</p>
+{% endif %}
+{% endblock %}

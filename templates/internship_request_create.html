@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Новая заявка на стажировку</h1>
+<form method="post">
+  <div>
+    <label for="specialization">Специализация</label>
+    <input id="specialization" name="specialization" />
+  </div>
+  <div>
+    <label for="student_count">Количество студентов</label>
+    <input id="student_count" name="student_count" type="number" min="0" />
+  </div>
+  <div class="row">
+    <div>
+      <label for="period_start">Начало периода</label>
+      <input id="period_start" name="period_start" type="date" />
+    </div>
+    <div>
+      <label for="period_end">Конец периода</label>
+      <input id="period_end" name="period_end" type="date" />
+    </div>
+  </div>
+  <div>
+    <label for="skills_required">Требуемые навыки</label>
+    <input id="skills_required" name="skills_required" />
+  </div>
+  <div class="row">
+    <button class="btn primary" type="submit">Отправить на модерацию</button>
+    <a class="btn" href="{{ url_for('university_dashboard') }}">Отмена</a>
+  </div>
+</form>
+{% endblock %}
+

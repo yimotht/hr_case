@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ vacancy.title }}</h1>
+
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <p style="margin: 5px 0; color: #9fb0c0;">
+    <strong>Компания:</strong> {{ vacancy.company_name }}
+  </p>
+  {% if vacancy.salary_range %}
+  <p style="margin: 5px 0; color: #9fb0c0;">
+    <strong>Зарплата:</strong> {{ vacancy.salary_range }}
+  </p>
+  {% endif %}
+  <p style="margin: 5px 0; color: #9fb0c0;">
+    <strong>Дата публикации:</strong> {{ vacancy.created_at }}
+  </p>
+</div>
+
+{% if vacancy.description %}
+<div style="margin-bottom: 20px;">
+  <h3>Описание</h3>
+  <div style="background: #0b0f14; padding: 15px; border-radius: 8px; color: #cfe3ff;">
+    {{ vacancy.description }}
+  </div>
+</div>
+{% endif %}
+
+{% if vacancy.requirements %}
+<div style="margin-bottom: 20px;">
+  <h3>Требования</h3>
+  <div style="background: #0b0f14; padding: 15px; border-radius: 8px; color: #cfe3ff;">
+    {{ vacancy.requirements }}
+  </div>
+</div>
+{% endif %}
+
+<div class="row">
+  <a class="btn primary" href="{{ url_for('apply_to_vacancy', vacancy_id=vacancy.id) }}">Откликнуться</a>
+  <a class="btn" href="{{ url_for('catalog') }}">Назад к каталогу</a>
+</div>
+{% endblock %}

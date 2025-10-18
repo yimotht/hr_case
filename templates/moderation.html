@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Модерация</h1>
+
+<div class="row" style="margin-bottom:10px;">
+  <a class="btn {% if tab == 'vacancies' %}primary{% endif %}" href="{{ url_for('admin_moderation', tab='vacancies') }}">Вакансии на модерации</a>
+  <a class="btn {% if tab == 'internships' %}primary{% endif %}" href="{{ url_for('admin_moderation', tab='internships') }}">Стажировки на модерации</a>
+  <a class="btn" href="{{ url_for('admin_only') }}">Назад</a>
+  </div>
+
+{% if tab == 'vacancies' %}
+  <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+    <form method="get" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto auto auto; gap: 10px; align-items: end;">
+      <input type="hidden" name="tab" value="vacancies" />
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">Компания</label>
+        <input name="company" placeholder="Поиск по компании" value="{{ company_q }}" style="width: 100%;" />
+      </div>
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">Статус</label>
+        <select name="status" style="width: 100%;">
+          {% for s in ['on_moderation','published','rejected','archived'] %}
+            <option value="{{ s }}" {% if status_q==s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">Страница</label>
+        <input type="number" name="page" min="1" value="{{ page }}" style="width: 100%;" />
+      </div>
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">На странице</label>
+        <input type="number" name="per_page" min="1" max="50" value="{{ per_page }}" style="width: 100%;" />
+      </div>
+      <button class="btn primary" type="submit">Применить</button>
+      <a class="btn" href="{{ url_for('admin_moderation', tab='vacancies') }}">Сбросить</a>
+    </form>
+  </div>
+  {% if vacancies %}
+    <ul>
+      {% for v in vacancies %}
+        <li style="margin-bottom:10px;">
+          <div><strong>{{ v.title }}</strong> — {{ v.company_name }} <small>({{ v.created_at }})</small></div>
+          <div><a href="{{ url_for('admin_vacancy_detail', vacancy_id=v.id) }}">Подробнее</a></div>
+          <div class="row">
+            <form method="post" action="{{ url_for('approve_vacancy', vacancy_id=v.id) }}">
+              <button class="btn primary" type="submit">Одобрить</button>
+            </form>
+            <form method="post" action="{{ url_for('reject_vacancy', vacancy_id=v.id) }}">
+              <button class="btn" type="submit">Отклонить</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="row">
+      {% if page>1 %}
+      <a class="btn" href="{{ url_for('admin_moderation', tab='vacancies', company=company_q, status=status_q, page=page-1, per_page=per_page) }}">Назад</a>
+      {% endif %}
+      {% if vac_total > page*per_page %}
+      <a class="btn" href="{{ url_for('admin_moderation', tab='vacancies', company=company_q, status=status_q, page=page+1, per_page=per_page) }}">Вперёд</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>Нет вакансий на модерации.</p>
+  {% endif %}
+{% else %}
+  <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+    <form method="get" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto auto auto; gap: 10px; align-items: end;">
+      <input type="hidden" name="tab" value="internships" />
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">Университет</label>
+        <input name="university" placeholder="Поиск по университету" value="{{ university_q }}" style="width: 100%;" />
+      </div>
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">Статус</label>
+        <select name="status" style="width: 100%;">
+          {% for s in ['on_moderation','published'] %}
+            <option value="{{ s }}" {% if status_q==s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">Страница</label>
+        <input type="number" name="page" min="1" value="{{ page }}" style="width: 100%;" />
+      </div>
+      <div>
+        <label style="display: block; font-size: 0.9rem; color: #9fb0c0; margin-bottom: 4px;">На странице</label>
+        <input type="number" name="per_page" min="1" max="50" value="{{ per_page }}" style="width: 100%;" />
+      </div>
+      <button class="btn primary" type="submit">Применить</button>
+      <a class="btn" href="{{ url_for('admin_moderation', tab='internships') }}">Сбросить</a>
+    </form>
+  </div>
+  {% if internship_requests %}
+    <ul>
+      {% for r in internship_requests %}
+        <li style="margin-bottom:10px;">
+          <div>
+            <strong>{{ r.specialization or 'Без специализации' }}</strong> — {{ r.university_name }}
+            <small>студентов: {{ r.student_count or 0 }}, период: {{ r.period_start }} — {{ r.period_end }}</small>
+          </div>
+          <div><a href="{{ url_for('internship_detail', req_id=r.id) }}">Подробнее</a></div>
+          <div class="row">
+            <form method="post" action="{{ url_for('approve_internship', req_id=r.id) }}">
+              <button class="btn primary" type="submit">Одобрить</button>
+            </form>
+            <form method="post" action="{{ url_for('reject_internship', req_id=r.id) }}">
+              <button class="btn" type="submit">Отклонить</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="row">
+      {% if page>1 %}
+      <a class="btn" href="{{ url_for('admin_moderation', tab='internships', university=university_q, status=status_q, page=page-1, per_page=per_page) }}">Назад</a>
+      {% endif %}
+      {% if int_total > page*per_page %}
+      <a class="btn" href="{{ url_for('admin_moderation', tab='internships', university=university_q, status=status_q, page=page+1, per_page=per_page) }}">Вперёд</a>
+      {% endif %}
+    </div>
+  {% else %}
+    <p>Нет заявок на стажировки на модерации.</p>
+  {% endif %}
+{% endif %}
+
+<hr />
+<h2>Удаление рассмотренных</h2>
+<p>Удалять можно только те элементы, которые уже не на модерации.</p>
+<form method="post" action="{{ url_for('delete_vacancy', vacancy_id=0) }}" onsubmit="event.preventDefault(); var id = prompt('ID вакансии для удаления (не на модерации):'); if(id){ this.action=this.action.replace('/0/','/'+id+'/'); this.submit(); }">
+  <button class="btn" type="submit">Удалить вакансию по ID</button>
+  </form>
+
+<form method="post" action="{{ url_for('delete_internship', req_id=0) }}" onsubmit="event.preventDefault(); var id = prompt('ID заявки на стажировку для удаления (не на модерации):'); if(id){ this.action=this.action.replace('/0/','/'+id+'/'); this.submit(); }">
+  <button class="btn" type="submit">Удалить заявку на стажировку по ID</button>
+  </form>
+{% endblock %}
+

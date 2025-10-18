@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Отклик на вакансию</h1>
+
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <h2 style="margin: 0 0 15px 0; color: #e6edf3;">{{ application.vacancy_title }}</h2>
+  <p style="margin: 5px 0; color: #9fb0c0;">
+    <strong>Кандидат:</strong> {{ application.candidate_name }}
+  </p>
+  <p style="margin: 5px 0; color: #9fb0c0;">
+    <strong>Статус:</strong> 
+    <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; background: {% if application.status == 'new' %}#663{% elif application.status == 'viewed' %}#335{% elif application.status == 'interview' %}#063{% else %}#633{% endif %};">
+      {{ application.status }}
+    </span>
+  </p>
+  <p style="margin: 5px 0; color: #9fb0c0;">
+    <strong>Дата отклика:</strong> {{ application.created_at }}
+  </p>
+</div>
+
+{% if application.first_name or application.last_name %}
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <h3>Информация о кандидате</h3>
+  {% if application.first_name or application.last_name %}
+  <p><strong>Имя:</strong> {{ application.first_name or '' }} {{ application.last_name or '' }}</p>
+  {% endif %}
+  {% if application.phone %}
+  <p><strong>Телефон:</strong> {{ application.phone }}</p>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if application.resume_title %}
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <h3>Резюме кандидата</h3>
+  <p><strong>Название резюме:</strong> {{ application.resume_title }}</p>
+  
+  {% if application.resume_file %}
+  <div style="margin: 10px 0;">
+    <strong>Прикрепленный файл:</strong>
+    <div style="background: #0b0f14; padding: 15px; border-radius: 4px; margin-top: 5px; color: #cfe3ff;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+        <span>📎 {{ application.resume_file.split('/')[-1] if '/' in application.resume_file else application.resume_file }}</span>
+        <div style="display: flex; gap: 8px;">
+          <a href="{{ url_for('hr_download_resume', resume_id=application.resume_id) }}" class="btn" style="padding: 6px 12px; font-size: 0.8rem;">Скачать</a>
+        </div>
+      </div>
+      <small style="color: #9fb0c0;">Файл загружен кандидатом</small>
+    </div>
+  </div>
+  {% endif %}
+  
+  {% if application.experience %}
+  <div style="margin: 10px 0;">
+    <strong>Опыт работы:</strong>
+    <div style="background: #0b0f14; padding: 10px; border-radius: 4px; margin-top: 5px; color: #cfe3ff;">
+      {{ application.experience }}
+    </div>
+  </div>
+  {% endif %}
+  {% if application.education %}
+  <div style="margin: 10px 0;">
+    <strong>Образование:</strong>
+    <div style="background: #0b0f14; padding: 10px; border-radius: 4px; margin-top: 5px; color: #cfe3ff;">
+      {{ application.education }}
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+
+{% if application.cover_letter %}
+<div style="background: #1a1f2e; padding: 20px; border-radius: 8px; border: 1px solid #2a3240; margin-bottom: 20px;">
+  <h3>Сопроводительное письмо</h3>
+  <div style="background: #0b0f14; padding: 15px; border-radius: 4px; color: #cfe3ff;">
+    {{ application.cover_letter }}
+  </div>
+</div>
+{% endif %}
+
+<div class="row">
+  <button class="btn primary" onclick="updateApplicationStatus({{ application.id }}, 'viewed')">Отметить как просмотренное</button>
+  <button class="btn" onclick="updateApplicationStatus({{ application.id }}, 'interview')">Пригласить на собеседование</button>
+  <button class="btn" onclick="updateApplicationStatus({{ application.id }}, 'rejected')">Отклонить</button>
+  <a class="btn" href="{{ url_for('hr_dashboard') }}">Назад к откликам</a>
+</div>
+
+<script>
+function updateApplicationStatus(applicationId, status) {
+  // В реальном приложении здесь был бы AJAX запрос
+  alert('Функция обновления статуса будет реализована');
+}
+</script>
+{% endblock %}

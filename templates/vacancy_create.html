@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Новая вакансия</h1>
+<form method="post">
+  <div>
+    <label for="title">Название</label>
+    <input id="title" name="title" />
+  </div>
+  <div>
+    <label for="description">Описание</label>
+    <input id="description" name="description" />
+  </div>
+  <div>
+    <label for="requirements">Требования</label>
+    <input id="requirements" name="requirements" />
+  </div>
+  <div>
+    <label for="salary_range">Зарплата</label>
+    <input id="salary_range" name="salary_range" />
+  </div>
+  <div class="row">
+    <button class="btn primary" type="submit">Отправить на модерацию</button>
+    <a class="btn" href="{{ url_for('university_dashboard') }}">Отмена</a>
+  </div>
+</form>
+{% endblock %}
+

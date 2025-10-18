@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Каталог вакансий</h1>
+{% if vacancies %}
+  <div style="display: grid; gap: 15px;">
+    {% for vacancy in vacancies %}
+      <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; border: 1px solid #2a3240;">
+        <h3 style="margin: 0 0 10px 0; color: #e6edf3;">{{ vacancy.title }}</h3>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Компания:</strong> {{ vacancy.company_name }}
+        </p>
+        {% if vacancy.salary_range %}
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Зарплата:</strong> {{ vacancy.salary_range }}
+        </p>
+        {% endif %}
+        <p style="margin: 10px 0; color: #cfe3ff;">
+          {{ vacancy.description[:200] }}{% if vacancy.description|length > 200 %}...{% endif %}
+        </p>
+        <div class="row">
+          <a class="btn primary" href="{{ url_for('vacancy_detail', vacancy_id=vacancy.id) }}">Подробнее</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p style="color: #9fb0c0;">Нет активных вакансий.</p>
+{% endif %}
+{% endblock %}

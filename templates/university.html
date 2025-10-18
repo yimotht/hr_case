@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Кабинет университета</h1>
+
+<div class="row" style="margin-bottom:20px;">
+  <a class="btn primary" href="{{ url_for('create_internship_request') }}">Подать заявку на стажировку</a>
+</div>
+
+<h2>Активные стажировки</h2>
+{% if approved_internships %}
+  <div style="display: grid; gap: 15px;">
+    {% for internship in approved_internships %}
+      <div style="background: #1a1f2e; padding: 15px; border-radius: 8px; border: 1px solid #2a3240;">
+        <h3 style="margin: 0 0 10px 0; color: #e6edf3;">{{ internship.specialization or 'Стажировка' }}</h3>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Университет:</strong> {{ internship.university_name }}
+        </p>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Количество студентов:</strong> {{ internship.student_count or 'Не указано' }}
+        </p>
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Период:</strong> {{ internship.period_start or 'Не указано' }} — {{ internship.period_end or 'Не указано' }}
+        </p>
+        {% if internship.skills_required %}
+        <p style="margin: 5px 0; color: #9fb0c0;">
+          <strong>Требуемые навыки:</strong> {{ internship.skills_required }}
+        </p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <p style="color: #9fb0c0;">Нет активных стажировок.</p>
+{% endif %}
+{% endblock %}
+
