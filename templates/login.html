@@ -1,19 +1,19 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block content %}
 <div class="card" style="max-width: 420px; margin: 4rem auto;">
-  <h1 class="text-center">Вход в систему</h1>
+  <h1 class="text-center">{{ _('Login') }}</h1>
   <form method="post">
     <div class="form-group">
-      <label for="username" class="form-label">Логин</label>
+      <label for="username" class="form-label">{{ _('Username') }}</label>
       <input id="username" name="username" class="form-input" autocomplete="username" required />
     </div>
     <div class="form-group">
-      <label for="password" class="form-label">Пароль</label>
+      <label for="password" class="form-label">{{ _('Password') }}</label>
       <input id="password" name="password" type="password" class="form-input" autocomplete="current-password" required />
     </div>
     <div class="d-flex gap-2 justify-center">
-      <button class="btn btn-primary" type="submit">Войти</button>
-      <a class="btn btn-secondary" href="{{ url_for('register') }}">Регистрация</a>
+      <button class="btn btn-primary" type="submit">{{ _('Enter') }}</button>
+      <a class="btn btn-secondary" href="{{ url_for('register') }}">{{ _('Register') }}</a>
     </div>
   </form>
 </div>

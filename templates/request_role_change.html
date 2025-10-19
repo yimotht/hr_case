@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>{{ _('Request Role Change') }}</h1>
+
+<div class="card">
+  <form method="post">
+    <div class="form-group">
+      <label for="current_role">{{ _('Current Role') }}:</label>
+      <input type="text" id="current_role" value="{{ session.role }}" readonly class="form-control">
+    </div>
+    
+    <div class="form-group">
+      <label for="requested_role">{{ _('Requested Role') }}:</label>
+      <select id="requested_role" name="requested_role" class="form-control" required>
+        <option value="">Выберите роль</option>
+        <option value="company_hr">HR компании</option>
+        <option value="university_rep">Представитель университета</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label for="reason">{{ _('Reason for Change') }}:</label>
+      <textarea id="reason" name="reason" class="form-control" rows="4" 
+                placeholder="Опишите причину изменения роли..."></textarea>
+    </div>
+    
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">{{ _('Submit Request') }}</button>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+    </div>
+  </form>
+</div>
+
+<div class="card">
+  <h3>Информация о ролях:</h3>
+  <ul>
+    <li><strong>HR компании</strong> - возможность создавать вакансии, просматривать отклики, управлять стажировками</li>
+    <li><strong>Представитель университета</strong> - возможность создавать заявки на стажировки, общаться с HR</li>
+  </ul>
+</div>
+{% endblock %}

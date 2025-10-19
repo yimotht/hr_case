@@ -1,12 +1,14 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block content %}
-<h1>Кабинет HR</h1>
+<h1>{{ _('HR Cabinet') }}</h1>
 
 <div class="d-flex gap-2 mb-4">
-  <a class="btn btn-primary" href="{{ url_for('hr_create_vacancy') }}">Создать вакансию</a>
+  <a class="btn btn-primary" href="{{ url_for('hr_create_vacancy') }}">{{ _('Create Vacancy') }}</a>
+  <a class="btn btn-secondary" href="{{ url_for('hr_internship_catalog') }}">{{ _('Internship Catalog') }}</a>
+  <a class="btn btn-secondary" href="{{ url_for('hr_chats') }}">{{ _('Chats') }}</a>
 </div>
 
-<h2>Мои вакансии</h2>
+<h2>{{ _('My Vacancies') }}</h2>
 {% if vacancies %}
   <div class="grid grid-2">
     {% for vacancy in vacancies %}

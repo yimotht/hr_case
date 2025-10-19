@@ -1,0 +1,81 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>{{ _('Chat') }}: {{ chat.specialization }}</h1>
+
+<div class="d-flex gap-2 mb-4">
+  <a class="btn btn-secondary" href="{{ url_for('university_chats') }}">← {{ _('Back to Chats') }}</a>
+</div>
+
+<div class="card mb-4">
+  <h3>{{ chat.specialization }}</h3>
+  <p><strong>{{ _('HR') }}:</strong> {{ chat.hr_name }}</p>
+  <p><strong>{{ _('Status') }}:</strong> 
+    <span class="badge badge-{% if chat.status == 'active' %}success{% else %}info{% endif %}">
+      {{ chat.status }}
+    </span>
+  </p>
+</div>
+
+<div class="card mb-4" style="height: 400px; overflow-y: auto;">
+  <h4>{{ _('Messages') }}</h4>
+  {% if messages %}
+    {% for message in messages %}
+      <div class="mb-3 p-2 {% if message.sender_role == 'university_rep' %}text-right{% endif %}">
+        <div class="d-flex {% if message.sender_role == 'university_rep' %}justify-end{% endif %}">
+          <div class="message-bubble {% if message.sender_role == 'university_rep' %}message-sent{% else %}message-received{% endif %}">
+            <div class="message-header">
+              <strong>{{ message.sender_name }}</strong>
+              <small class="text-muted">{{ message.created_at }}</small>
+            </div>
+            <div class="message-text">{{ message.message_text }}</div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="text-center text-muted">
+      <p>{{ _('No messages yet') }}</p>
+      <p>{{ _('Start the conversation') }}</p>
+    </div>
+  {% endif %}
+</div>
+
+<form method="post" action="{{ url_for('university_send_message', chat_id=chat.id) }}">
+  <div class="form-group">
+    <textarea name="message" class="form-textarea" rows="3" placeholder="{{ _('Type your message here...') }}" required></textarea>
+  </div>
+  <div class="d-flex gap-2">
+    <button class="btn btn-primary" type="submit">{{ _('Send Message') }}</button>
+  </div>
+</form>
+
+<style>
+.message-bubble {
+  max-width: 70%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  margin-bottom: 5px;
+}
+
+.message-sent {
+  background-color: var(--ral-3026);
+  color: white;
+  margin-left: auto;
+}
+
+.message-received {
+  background-color: #f0f0f0;
+  color: var(--ral-3007);
+}
+
+.message-header {
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+  opacity: 0.8;
+}
+
+.message-text {
+  word-wrap: break-word;
+}
+</style>
+{% endblock %}

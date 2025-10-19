@@ -1,9 +1,10 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block content %}
 <h1>Кабинет университета</h1>
 
-<div class="row" style="margin-bottom:20px;">
-  <a class="btn primary" href="{{ url_for('create_internship_request') }}">Подать заявку на стажировку</a>
+<div class="d-flex gap-2 mb-4">
+  <a class="btn btn-primary" href="{{ url_for('create_internship_request') }}">{{ _('Create Internship Request') }}</a>
+  <a class="btn btn-secondary" href="{{ url_for('university_chats') }}">{{ _('Chats') }}</a>
 </div>
 
 <h2>Активные стажировки</h2>

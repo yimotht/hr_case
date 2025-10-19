@@ -1,0 +1,50 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>{{ _('Chats') }}</h1>
+
+<div class="d-flex gap-2 mb-4">
+  <a class="btn btn-secondary" href="{{ url_for('hr_dashboard') }}">← {{ _('Back to HR Cabinet') }}</a>
+</div>
+
+{% if chats %}
+  <div class="grid grid-2">
+    {% for chat in chats %}
+      <div class="vacancy-card">
+        <div class="d-flex justify-between align-center mb-2">
+          <h3 class="vacancy-title">{{ chat.specialization }}</h3>
+          <div class="d-flex gap-1 align-center">
+            {% if chat.unread_count > 0 %}
+            <span class="badge badge-danger">{{ chat.unread_count }} {{ _('Unread Messages') }}</span>
+            {% endif %}
+            <span class="badge badge-{% if chat.status == 'active' %}success{% else %}info{% endif %}">
+              {{ chat.status }}
+            </span>
+          </div>
+        </div>
+        
+        <p class="mb-1">
+          <strong>{{ _('University') }}:</strong> <span class="accent-text">{{ chat.university_name }}</span>
+        </p>
+        
+        <p class="mb-1">
+          <strong>{{ _('Created') }}:</strong> {{ chat.created_at }}
+        </p>
+        
+        <div class="d-flex gap-2 mt-3">
+          <a class="btn btn-primary" href="{{ url_for('hr_chat_detail', chat_id=chat.id) }}">
+            {{ _('Open Chat') }}
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card text-center">
+    <h3>{{ _('No chats yet') }}</h3>
+    <p>{{ _('Start chatting with universities about internships') }}</p>
+    <a class="btn btn-primary" href="{{ url_for('hr_internship_catalog') }}">
+      {{ _('Internship Catalog') }}
+    </a>
+  </div>
+{% endif %}
+{% endblock %}

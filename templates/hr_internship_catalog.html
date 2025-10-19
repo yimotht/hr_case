@@ -1,0 +1,61 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>{{ _('Internship Catalog') }}</h1>
+
+<div class="d-flex gap-2 mb-4">
+  <a class="btn btn-secondary" href="{{ url_for('hr_dashboard') }}">← {{ _('Back to HR Cabinet') }}</a>
+</div>
+
+{% if internships %}
+  <div class="grid grid-2">
+    {% for internship in internships %}
+      <div class="vacancy-card">
+        <div class="d-flex justify-between align-center mb-2">
+          <h3 class="vacancy-title">{{ internship.specialization }}</h3>
+          <span class="badge badge-info">{{ _('Internship') }}</span>
+        </div>
+        
+        <p class="mb-1">
+          <strong>{{ _('University') }}:</strong> <span class="accent-text">{{ internship.university_name }}</span>
+        </p>
+        
+        <p class="mb-1">
+          <strong>{{ _('Student Count') }}:</strong> {{ internship.student_count }}
+        </p>
+        
+        {% if internship.period_start %}
+        <p class="mb-1">
+          <strong>{{ _('Period Start') }}:</strong> {{ internship.period_start }}
+        </p>
+        {% endif %}
+        
+        {% if internship.period_end %}
+        <p class="mb-1">
+          <strong>{{ _('Period End') }}:</strong> {{ internship.period_end }}
+        </p>
+        {% endif %}
+        
+        {% if internship.skills_required %}
+        <div class="mb-2">
+          <strong>{{ _('Required Skills') }}:</strong>
+          <div class="card" style="margin-top: 5px; padding: 1rem;">
+            {{ internship.skills_required }}
+          </div>
+        </div>
+        {% endif %}
+        
+        <div class="d-flex gap-2 mt-3">
+          <a class="btn btn-primary" href="{{ url_for('hr_apply_to_internship', internship_id=internship.id) }}">
+            {{ _('Apply for Internship') }}
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="card text-center">
+    <h3>{{ _('No internships available') }}</h3>
+    <p>{{ _('There are no published internships at the moment.') }}</p>
+  </div>
+{% endif %}
+{% endblock %}

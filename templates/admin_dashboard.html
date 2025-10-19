@@ -1,0 +1,200 @@
+{% extends "index.html" %}
+{% block content %}
+<h1>{{ _('Admin Dashboard') }}</h1>
+
+<div class="row" style="margin-bottom: 20px;">
+  <a class="btn" href="{{ url_for('admin_only') }}">Назад в админ-раздел</a>
+  <a class="btn" href="{{ url_for('admin_moderation') }}">{{ _('Moderation') }}</a>
+  <a class="btn" href="{{ url_for('admin_role_requests') }}">{{ _('Role Change Requests') }}</a>
+</div>
+
+<!-- Статистические карточки -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">💼</div>
+    <div class="stat-content">
+      <h3>{{ stats.active_vacancies }}</h3>
+      <p>{{ _('Active Vacancies') }}</p>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-icon">🎓</div>
+    <div class="stat-content">
+      <h3>{{ stats.active_internships }}</h3>
+      <p>{{ _('Active Internships') }}</p>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-icon">⏳</div>
+    <div class="stat-content">
+      <h3>{{ stats.pending_moderation }}</h3>
+      <p>{{ _('Pending Moderation') }}</p>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-icon">🔄</div>
+    <div class="stat-content">
+      <h3>{{ stats.role_change_requests }}</h3>
+      <p>{{ _('Role Change Requests') }}</p>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-icon">👥</div>
+    <div class="stat-content">
+      <h3>{{ stats.total_users }}</h3>
+      <p>{{ _('Total Users') }}</p>
+    </div>
+  </div>
+  
+  <div class="stat-card">
+    <div class="stat-icon">🏢</div>
+    <div class="stat-content">
+      <h3>{{ stats.total_companies }}</h3>
+      <p>{{ _('Total Companies') }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Быстрые действия -->
+<div class="row">
+  <div class="card">
+    <h3>Быстрые действия</h3>
+    <div class="quick-actions">
+      <a href="{{ url_for('admin_moderation', tab='vacancies') }}" class="btn btn-primary">
+        Модерация вакансий
+      </a>
+      <a href="{{ url_for('admin_moderation', tab='internships') }}" class="btn btn-primary">
+        Модерация стажировок
+      </a>
+      <a href="{{ url_for('admin_role_requests', status='pending') }}" class="btn btn-warning">
+        Заявки на смену роли
+      </a>
+    </div>
+  </div>
+  
+  <div class="card">
+    <h3>Статистика по ролям</h3>
+    <div id="roleStats">
+      <p>Загрузка статистики...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Последние активности -->
+<div class="card">
+  <h3>Последние активности</h3>
+  <div id="recentActivity">
+    <p>Загрузка последних активностей...</p>
+  </div>
+</div>
+
+<style>
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: linear-gradient(135deg, #1a1f2e 0%, #2d3748 100%);
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  font-size: 2.5em;
+  opacity: 0.8;
+}
+
+.stat-content h3 {
+  margin: 0;
+  font-size: 2em;
+  color: #4a9eff;
+}
+
+.stat-content p {
+  margin: 5px 0 0 0;
+  color: #9fb0c0;
+  font-size: 0.9em;
+}
+
+.quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.quick-actions .btn {
+  flex: 1;
+  min-width: 150px;
+  text-align: center;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+#roleStats, #recentActivity {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9fb0c0;
+}
+</style>
+
+<script>
+// Загрузка дополнительной статистики
+document.addEventListener('DOMContentLoaded', function() {
+  loadRoleStats();
+  loadRecentActivity();
+});
+
+function loadRoleStats() {
+  // Здесь можно добавить AJAX запрос для получения статистики по ролям
+  document.getElementById('roleStats').innerHTML = `
+    <div style="text-align: center;">
+      <p>Статистика по ролям будет загружена здесь</p>
+      <small>Функция в разработке</small>
+    </div>
+  `;
+}
+
+function loadRecentActivity() {
+  // Здесь можно добавить AJAX запрос для получения последних активностей
+  document.getElementById('recentActivity').innerHTML = `
+    <div style="text-align: center;">
+      <p>Последние активности будут загружены здесь</p>
+      <small>Функция в разработке</small>
+    </div>
+  `;
+}
+</script>
+{% endblock %}

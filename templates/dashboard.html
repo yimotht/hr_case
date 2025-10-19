@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block content %}
-<h1>Личный кабинет</h1>
+<h1>{{ _('Personal Cabinet') }}</h1>
 
 <div class="profile-header">
   <!-- Аватар -->
@@ -18,34 +18,37 @@
         {{ user.username }}
       {% endif %}
     </h2>
-    <p><strong>Роль:</strong> {{ user.role }}</p>
-    <p><strong>Email:</strong> {{ user.email or 'Не указан' }}</p>
-    <p><strong>Телефон:</strong> {{ user.phone or 'Не указан' }}</p>
-    <p><strong>Дата регистрации:</strong> {{ user.created_at }}</p>
+    <p><strong>{{ _('Role') }}:</strong> {{ user.role }}</p>
+    <p><strong>{{ _('Email') }}:</strong> {{ user.email or 'Не указан' }}</p>
+    <p><strong>{{ _('Phone') }}:</strong> {{ user.phone or 'Не указан' }}</p>
+    <p><strong>{{ _('Registration Date') }}:</strong> {{ user.created_at }}</p>
   </div>
 </div>
 
 <!-- Кнопки действий -->
 <div class="d-flex gap-2 mb-4 flex-wrap">
-  <a href="{{ url_for('edit_profile') }}" class="btn btn-primary">Редактировать профиль</a>
-  <a href="{{ url_for('change_password') }}" class="btn btn-secondary">Изменить пароль</a>
+  <a href="{{ url_for('edit_profile') }}" class="btn btn-primary">{{ _('Edit Profile') }}</a>
+  <a href="{{ url_for('change_password') }}" class="btn btn-secondary">{{ _('Change Password') }}</a>
+  {% if user.role == 'candidate' %}
+  <a href="{{ url_for('request_role_change') }}" class="btn btn-warning">{{ _('Change Role') }}</a>
+  {% endif %}
   {% if user.role == 'admin' %}
-  <a href="{{ url_for('admin_only') }}" class="btn btn-secondary">Админ-раздел</a>
+  <a href="{{ url_for('admin_only') }}" class="btn btn-secondary">{{ _('Admin Section') }}</a>
   {% endif %}
   {% if user.role == 'company_hr' %}
-  <a href="{{ url_for('hr_dashboard') }}" class="btn btn-secondary">Кабинет HR</a>
+  <a href="{{ url_for('hr_dashboard') }}" class="btn btn-secondary">{{ _('HR Cabinet') }}</a>
   {% endif %}
   {% if user.role == 'university_rep' %}
-  <a href="{{ url_for('university_dashboard') }}" class="btn btn-secondary">Кабинет университета</a>
+  <a href="{{ url_for('university_dashboard') }}" class="btn btn-secondary">{{ _('University Cabinet') }}</a>
   {% endif %}
   {% if user.role == 'candidate' %}
-  <a href="{{ url_for('catalog') }}" class="btn btn-secondary">Каталог вакансий</a>
+  <a href="{{ url_for('catalog') }}" class="btn btn-secondary">{{ _('Job Catalog') }}</a>
   {% endif %}
 </div>
 
 <!-- Статистика -->
 <div class="card">
-  <h3>Статистика</h3>
+  <h3>{{ _('Statistics') }}</h3>
   <p>Здесь будет отображаться статистика в зависимости от вашей роли</p>
 </div>
 {% endblock %}

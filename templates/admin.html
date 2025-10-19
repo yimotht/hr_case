@@ -1,5 +1,19 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
 {% block content %}
-<h1>Админ-раздел</h1>
-<p>Тут может быть админ-функционал.</p>
+<h1>{{ _('Admin Section') }}</h1>
+
+<div class="row" style="margin-bottom: 20px;">
+  <a class="btn primary" href="{{ url_for('admin_dashboard') }}">{{ _('Dashboard') }}</a>
+  <a class="btn" href="{{ url_for('admin_moderation') }}">{{ _('Moderation') }}</a>
+  <a class="btn" href="{{ url_for('admin_role_requests') }}">{{ _('Role Change Requests') }}</a>
+</div>
+
+<div class="card">
+  <h3>Доступные функции:</h3>
+  <ul>
+    <li><a href="{{ url_for('admin_dashboard') }}">{{ _('Dashboard') }}</a> - Статистика и метрики платформы</li>
+    <li><a href="{{ url_for('admin_moderation') }}">{{ _('Moderation') }}</a> - Модерация вакансий и стажировок</li>
+    <li><a href="{{ url_for('admin_role_requests') }}">{{ _('Role Change Requests') }}</a> - Управление заявками на изменение роли</li>
+  </ul>
+</div>
 {% endblock %}

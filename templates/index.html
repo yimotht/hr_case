@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ title or "Платформа подбора персонала" }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <!-- Навигационная панель -->
+    <nav class="navbar">
+      <div class="container">
+        <div class="navbar-content">
+          <a href="{{ url_for('dashboard') if session.username else url_for('login') }}" class="navbar-brand">
+            {{ _('HR Platform') }}
+          </a>
+          {% if session.username %}
+            <div class="navbar-nav">
+              <span class="nav-link">{{ _('You are logged in as') }} <strong>{{ session.username }}</strong> ({{ session.role }})</span>
+              <a class="nav-link" href="{{ url_for('dashboard') }}">{{ _('Personal Cabinet') }}</a>
+              {% if session.role == 'admin' %}
+              <a class="nav-link" href="{{ url_for('admin_dashboard') }}">{{ _('Dashboard') }}</a>
+              <a class="nav-link" href="{{ url_for('admin_moderation') }}">{{ _('Moderation') }}</a>
+              {% endif %}
+              {% if session.role == 'university_rep' %}
+              <a class="nav-link" href="{{ url_for('university_dashboard') }}">{{ _('University Cabinet') }}</a>
+              {% endif %}
+              {% if session.role == 'company_hr' %}
+              <a class="nav-link" href="{{ url_for('hr_dashboard') }}">{{ _('HR Cabinet') }}</a>
+              {% endif %}
+              <a class="nav-link" href="{{ url_for('catalog') }}">{{ _('Job Catalog') }}</a>
+              <a class="nav-link" href="{{ url_for('logout') }}">{{ _('Logout') }}</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="container">
+      {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Кнопки переключения языков -->
+    <footer class="language-switcher">
+      <div class="container">
+        <div class="footer-content">
+          <!-- Логотип -->
+          <div class="logo-container">
+            {% set current_lang = session.get('language', 'ru') %}
+            {% if current_lang == 'en' %}
+              <img src="{{ url_for('static', filename='logo_en.svg') }}" alt="HR Platform Logo" class="footer-logo">
+            {% elif current_lang == 'zh' %}
+              <img src="{{ url_for('static', filename='logo_ch.svg') }}" alt="HR Platform Logo" class="footer-logo">
+            {% else %}
+              <img src="{{ url_for('static', filename='logo_rus.svg') }}" alt="HR Platform Logo" class="footer-logo">
+            {% endif %}
+          </div>
+          
+          <!-- Кнопки языков -->
+          <div class="language-buttons">
+            <a href="{{ url_for('set_language', language='ru') }}" class="lang-btn {% if session.get('language', 'ru') == 'ru' %}active{% endif %}">
+              <span class="lang-flag">🇷🇺</span>
+              <span class="lang-name">{{ _('Russian') }}</span>
+            </a>
+            <a href="{{ url_for('set_language', language='en') }}" class="lang-btn {% if session.get('language', 'ru') == 'en' %}active{% endif %}">
+              <span class="lang-flag">🇺🇸</span>
+              <span class="lang-name">{{ _('English') }}</span>
+            </a>
+            <a href="{{ url_for('set_language', language='zh') }}" class="lang-btn {% if session.get('language', 'ru') == 'zh' %}active{% endif %}">
+              <span class="lang-flag">🇨🇳</span>
+              <span class="lang-name">{{ _('Chinese') }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
